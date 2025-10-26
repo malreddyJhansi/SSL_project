@@ -1,0 +1,16 @@
+# Ignore secrets
+config.json
+
+# Bytecode and caches
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Reports
+ssl_report_*.pdf
+
+# Virtual envs
+venv/
+.env/
