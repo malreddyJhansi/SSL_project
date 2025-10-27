@@ -32,12 +32,7 @@ def generate_ssl_report(expired, expiring, invalid, output_file="ssl_report.pdf"
     elements.append(Paragraph(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", styles["Normal"]))
     elements.append(Spacer(1, 20))
 
-    summary = f"""
-    <b>Summary</b><br/>
-    Expired: <b>{len(expired)}</b><br/>
-    Expiring Soon: <b>{len(expiring)}</b><br/>
-    Invalid: <b>{len(invalid)}</b><br/>
-    """
+    summary = f"<b>Summary</b><br/>Expired: <b>{len(expired)}</b><br/>Expiring Soon: <b>{len(expiring)}</b><br/>Invalid: <b>{len(invalid)}</b><br/>"
     elements.append(Paragraph(summary, styles["Normal"]))
     elements.append(Spacer(1, 20))
 
@@ -64,4 +59,3 @@ def generate_ssl_report(expired, expiring, invalid, output_file="ssl_report.pdf"
 
     doc.build(elements)
     logger.info(f"✅ SSL Report generated: {output_file}")
-
