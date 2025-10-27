@@ -1,2 +1,4 @@
-pyspark==3.5.1
-reportlab==4.2.2
+reportlab
+pyspark
+pandas
+fpdf
