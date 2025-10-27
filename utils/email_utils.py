@@ -19,6 +19,10 @@ def build_email(sender, recipient, subject, body, attachment_path=None):
             encoders.encode_base64(mime_base)
             mime_base.add_header("Content-Disposition", f'attachment; filename="{os.path.basename(attachment_path)}"')
             msg.attach(mime_base)
+            logger.info(f"📎 Attached file: {attachment_path}")
+    else:
+        logger.warning(f"⚠️ Attachment not found: {attachment_path}")
+
     return msg
 
 def send_email(msg, smtp_server, smtp_port, username, password):
@@ -29,5 +33,4 @@ def send_email(msg, smtp_server, smtp_port, username, password):
             server.send_message(msg)
         logger.info("✅ Email sent successfully!")
     except Exception as e:
-        logger.error("❌ Email sending failed", exc_info=True)
-
+        logger.error(f"❌ Email sending failed: {e}", exc_info=True)
