@@ -21,13 +21,12 @@ def get_cert_schema():
 def process_domains(spark, expiry_threshold):
     schema = get_cert_schema()
     fetch_ssl_cert_udf = F.udf(lambda h, p: fetch_ssl_cert(h, p, expiry_threshold), schema)
-
     domain_df = spark.table("ssl_hosts_final")
 
     cert_df = domain_df.withColumn("cert_details", fetch_ssl_cert_udf("hostname", "port")) \
                        .select("hostname", "port", "cert_details.*")
 
-    cert_df = cert_df.withColumn("run_date", F.lit(F.current_timestamp()))
+    cert_df = cert_df.withColumn("run_date", F.current_timestamp())
     cert_df.write.format("delta").mode("append").saveAsTable("ssl_hosts_final_results")
 
     df_all = spark.table("ssl_hosts_final_results")
@@ -39,4 +38,3 @@ def process_domains(spark, expiry_threshold):
     invalid = [r.asDict() for r in df.filter(df.issue_category != "SSL_CERT_OK").collect()]
 
     return expired, expiring, invalid
-
