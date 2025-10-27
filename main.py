@@ -1,6 +1,6 @@
 import os
 import sys
-
+os.system("pip install -r requirements.txt")
 # Fix for Databricks (no _file_ variable)
 BASE_DIR = os.getcwd()
 if BASE_DIR not in sys.path:
