@@ -27,11 +27,11 @@ from utils.email_utils import build_email, send_email
 # ================================================================
 def main():
     logger.info("🚀 Starting SSL Monitoring Job")
-
     # Load configuration
-    CONFIG_PATH = os.path.join(os.path.dirname(_file_), "config.json")
+    CONFIG_PATH = os.path.join(os.getcwd(), "config.json")
+
     if not os.path.exists(CONFIG_PATH):
-        logger.error("❌ Config file not found.")
+        logger.error(f"❌ Config file not found at {CONFIG_PATH}")
         sys.exit(1)
 
     with open(CONFIG_PATH, "r") as f:
