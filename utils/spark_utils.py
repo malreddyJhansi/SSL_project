@@ -27,7 +27,7 @@ def process_domains(spark, expiry_threshold):
                        .select("hostname", "port", "cert_details.*")
 
     cert_df = cert_df.withColumn("run_date", F.current_timestamp())
-    cert_df.write.format("delta").mode("append").saveAsTable("ssl_hosts_final_results")
+    cert_df.write.format("delta").mode("append").option("mergeSchema", "true").saveAsTable("ssl_hosts_final_results")
 
     df_all = spark.table("ssl_hosts_final_results")
     latest_run_date = df_all.select("run_date").orderBy(F.col("run_date").desc()).limit(1).collect()[0][0]
