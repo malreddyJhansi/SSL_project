@@ -7,7 +7,7 @@ if BASE_DIR not in sys.path:
     sys.path.append(BASE_DIR)
 
 from utils.logger_utils import logger
-from utils.spark_utility import *
+from utils.spark_utils import *
 from utils.pdf_report import *
 
 logger.info("SSL Certificate Monitoring Job Started")
