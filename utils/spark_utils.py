@@ -26,7 +26,7 @@ def process_domains(spark, expiry_threshold):
     cert_df = domain_df.withColumn("cert_details", fetch_ssl_cert_udf("hostname", "port")) \
                        .select("hostname", "port", "cert_details.*")
 
-    cert_df = cert_df.withColumn("run_date", F.current_timestamp())
+    cert_df = cert_df.withColumn("run_date", F.date_format(F.current_timestamp(), "yyyy-MM-dd HH:mm:ss"))
     cert_df.write.format("delta").mode("append").option("mergeSchema", "true").saveAsTable("ssl_hosts_final_results")
 
     df_all = spark.table("ssl_hosts_final_results")
