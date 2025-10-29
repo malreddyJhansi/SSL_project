@@ -1,5 +1,5 @@
 import ssl, socket, re
-from datetime import datetime
+from datetime import datetime, timezone
 from utils.logger_utils import logger
 
 def is_valid_hostname(hostname: str) -> bool:
@@ -31,10 +31,11 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
                 with context.wrap_socket(sock, server_hostname=hostname) as ssock:
                     cert = ssock.getpeercert()
                     not_before = datetime.strptime(cert['notBefore'], '%b %d %H:%M:%S %Y %Z')
-                    not_after = datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z')
-                    days_to_expiry = (not_after - datetime.utcnow()).days
+                    not_after = datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z').replace(tzinfo=timezone.utc)
+                    now = datetime.now(timezone.utc)
+                    days_to_expiry = (not_after - now).days
 
-                    if days_to_expiry < 0:
+                    if now > not_after:
                         status = "expired"
                     elif days_to_expiry <= expiry_threshold:
                         status = "expiring soon"
