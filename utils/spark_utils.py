@@ -35,17 +35,6 @@ def process_domains(spark, expiry_threshold):
 
     expired = [r.asDict() for r in df.filter(F.lower(df.cert_status).contains("expired")).collect()]
     expiring = [r.asDict() for r in df.filter(F.lower(df.cert_status).contains("expiring")).collect()]
-    # Invalid = all SSL errors that are NOT expired or expiring
-    invalid = [r.asDict() for r in df.filter(
-        (F.col("issue_category") != "ssl_cert_ok") &
-        (~F.col("cert_status").contains("expired")) &
-        (~F.col("cert_status").contains("expiring"))
-    ).collect()]
-
-    # --- 🧾 Optional: Log summary ---
-    total_count = df.count()
-    logger.info(f"✅ Total checked: {total_count}")
-    logger.info(f"📍 Expired: {len(expired)} | Expiring Soon: {len(expiring)} | Invalid: {len(invalid)}")
+    invalid = [r.asDict() for r in df.filter(df.issue_category != "SSL_CERT_OK").collect()]
 
     return expired, expiring, invalid
-
