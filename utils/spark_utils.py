@@ -32,9 +32,14 @@ def process_domains(spark, expiry_threshold):
     df_all = spark.table("ssl_hosts_final_results")
     latest_run_date = df_all.select("run_date").orderBy(F.col("run_date").desc()).limit(1).collect()[0][0]
     df = df_all.filter(F.col("run_date") == F.lit(latest_run_date))
+    
+    df = df.withColumn("cert_status", F.lower(F.col("cert_status")))
 
     expired = [r.asDict() for r in df.filter(F.lower(df.cert_status).contains("expired")).collect()]
     expiring = [r.asDict() for r in df.filter(F.lower(df.cert_status).contains("expiring")).collect()]
-    invalid = [r.asDict() for r in df.filter(df.issue_category != "SSL_CERT_OK").collect()]
+    # Remove expired from invalid to avoid duplicates
+    invalid = [r.asDict() for r in df.filter(
+        (df.issue_category != "SSL_CERT_OK") & (~F.lower(df.cert_status).contains("expired"))
+    ).collect()]
 
     return expired, expiring, invalid
