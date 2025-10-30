@@ -42,19 +42,6 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
                     else:
                         status = "valid"
 
-                    # Normalize status
-                    status = status.strip().lower()
-                    
-                    # Simplify to 4 categories
-                    if "expired" in status:
-                        status = "expired"
-                    elif "expiring" in status:
-                        status = "expiring soon"
-                    elif "valid" in status:
-                        status = "valid"
-                    else:
-                        status = "invalid"
-
                     issuer = dict(x[0] for x in cert['issuer']).get('organizationName', 'N/A')
                     subject = dict(x[0] for x in cert['subject']).get('commonName', 'N/A')
 
@@ -69,4 +56,16 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
             last_error = str(e)
 
     issue_category, cert_status = classify_error(hostname, last_error or "Unknown failure")
+    # Normalize status
+                    status = status.strip().lower()
+                    
+                    # Simplify to 4 categories
+                    if "expired" in status:
+                        status = "expired"
+                    elif "expiring" in status:
+                        status = "expiring soon"
+                    elif "valid" in status:
+                        status = "valid"
+                    else:
+                        status = "invalid"
     return (False, "N/A", "N/A", "N/A", "N/A", None, cert_status, issue_category, last_error, "INVALID_ALERT")
