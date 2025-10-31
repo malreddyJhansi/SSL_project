@@ -30,6 +30,9 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
             with socket.create_connection((hostname, port), timeout=5) as sock:
                 with context.wrap_socket(sock, server_hostname=hostname) as ssock:
                     cert = ssock.getpeercert()
+                    # ✅ Ensure certificate has expected fields
+                    if not cert or 'notBefore' not in cert or 'notAfter' not in cert:
+                        raise ValueError("Incomplete certificate data")
                     not_before = datetime.strptime(cert['notBefore'], '%b %d %H:%M:%S %Y %Z')
                     not_after = datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z').replace(tzinfo=timezone.utc)
                     now = datetime.now(timezone.utc)
