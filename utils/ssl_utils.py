@@ -67,4 +67,4 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
         status = "valid"
     else:
         status = "invalid"
-    return (False, "N/A", "N/A", "N/A", "N/A", None, cert_status, issue_category, last_error, "INVALID_ALERT")
+    return (False, "N/A", "N/A", "N/A", "N/A", None, status, issue_category, last_error, "INVALID_ALERT")
