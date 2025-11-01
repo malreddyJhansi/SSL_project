@@ -59,7 +59,9 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
     # ✅ Normalize and simplify status before returning
     status = (cert_status or "invalid").strip().lower()
     
-    if "expired" in status:
+    if "invalid" in status:
+        status = "invalid"
+    elif "expired" in status:
         status = "expired"
     elif "expiring" in status:
         status = "expiring soon"
