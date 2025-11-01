@@ -30,12 +30,6 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
             with socket.create_connection((hostname, port), timeout=5) as sock:
                 with context.wrap_socket(sock, server_hostname=hostname) as ssock:
                     cert = ssock.getpeercert()
-                    if (
-                        not cert
-                        or 'notBefore' not in cert or not cert['notBefore']
-                        or 'notAfter' not in cert or not cert['notAfter']
-                    ):
-                        raise ValueError(f"Incomplete or empty certificate data for {hostname}")
                     not_before = datetime.strptime(cert['notBefore'], '%b %d %H:%M:%S %Y %Z')
                     not_after = datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z').replace(tzinfo=timezone.utc)
                     now = datetime.now(timezone.utc)
@@ -56,26 +50,10 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
                         not_before.strftime('%Y-%m-%d'),
                         not_after.strftime('%Y-%m-%d'),
                         days_to_expiry, status,
-                        "SSL_CERT_OK", "", "NO_ALERT"
+"SSL_CERT_OK", "", "NO_ALERT"
                     )
         except Exception as e:
             last_error = str(e)
 
-    # --- after retries failed ---
     issue_category, cert_status = classify_error(hostname, last_error or "Unknown failure")
-
-    # ✅ Normalize and simplify final status here
-    status = (cert_status or "invalid").strip().lower()
-    if "expired" in status:
-        status = "expired"
-    elif "expiring" in status:
-        status = "expiring soon"
-    elif "valid" in status:
-        status = "valid"
-    else:
-        status = "invalid"
-
-    return (
-        False, "N/A", "N/A", "N/A", "N/A",
-        None, status, issue_category, last_error, "INVALID_ALERT"
-    )
+    return (False, "N/A", "N/A", "N/A", "N/A", None, cert_status, issue_category, last_error, "INVALID_ALERT")
