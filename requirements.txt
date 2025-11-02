@@ -1,4 +1,3 @@
 reportlab
 pyspark
 pandas
-fpdf
