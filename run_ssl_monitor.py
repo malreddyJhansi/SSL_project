@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 # ================================================================
-# STEP 1: Install dependencies BEFORE importing any project modules
+# Install dependencies
 # ================================================================
 try:
     # Install all dependencies from requirements.txt
@@ -15,7 +15,7 @@ except Exception as e:
     sys.exit(1)
 
 # ================================================================
-# STEP 2: Import your project modules
+# Import your project modules
 # ================================================================
 from utils.logger_utils import logger
 from utils.spark_utils import init_spark, process_domains
@@ -23,7 +23,7 @@ from utils.pdf_report import generate_ssl_report
 from utils.email_utils import build_email, send_email
 
 # ================================================================
-# STEP 3: Main job runner
+# Main job runner
 # ================================================================
 def main():
     logger.info("🚀 Starting SSL Monitoring Job")
@@ -68,7 +68,7 @@ def main():
     logger.info("🏁 Job completed successfully!")
 
 # ================================================================
-# STEP 4: Entry point
+#Entry point
 # ================================================================
 if __name__ == "__main__":
     main()
