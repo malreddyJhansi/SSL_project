@@ -2,10 +2,14 @@ import os
 import sys
 import json
 from datetime import datetime
+from utils.logger_utils import logger
+from utils.spark_utils import init_spark, process_domains
+from utils.pdf_report import generate_ssl_report
+from utils.email_utils import build_email, send_email
 
-# ================================================================
-# STEP 1: Install dependencies BEFORE importing any project modules
-# ================================================================
+
+ #Install dependencies
+
 try:
     # Install all dependencies from requirements.txt
     os.system("pip install -r requirements.txt")
@@ -14,17 +18,9 @@ except Exception as e:
     print(f"❌ Dependency installation failed: {e}")
     sys.exit(1)
 
-# ================================================================
-# STEP 2: Import your project modules
-# ================================================================
-from utils.logger_utils import logger
-from utils.spark_utils import init_spark, process_domains
-from utils.pdf_report import generate_ssl_report
-from utils.email_utils import build_email, send_email
 
-# ================================================================
-# STEP 3: Main job runner
-# ================================================================
+# Main job runner
+
 def main():
     logger.info("🚀 Starting SSL Monitoring Job")
     # Load configuration
@@ -67,8 +63,8 @@ def main():
     send_email(email_msg, SMTP_SERVER, SMTP_PORT, SMTP_USER, SMTP_PASS)
     logger.info("🏁 Job completed successfully!")
 
-# ================================================================
-# STEP 4: Entry point
-# ================================================================
+
+#Entry point
+
 if __name__ == "__main__":
     main()
