@@ -3,7 +3,7 @@
   "smtp_port": 587,
   "smtp_user": "c08f057c9e65ac",
   "smtp_pass": "f337e31431c4e9",
-  "sender_email": "alerts@ydomain.com",
-  "recipient_email": "admin@ydomain.com",
+  "sender_email": "alerts@domain.com",
+  "recipient_email": "admin@domain.com",
   "expiry_threshold": 30
 }
