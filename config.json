@@ -1,8 +1,8 @@
 {
   "smtp_server": "smtp.mailtrap.io",
   "smtp_port": 587,
-  "smtp_user": "c08f057c9e65ac",
-  "smtp_pass": "f337e31431c4e9",
+  "smtp_user": "08ba6c1eeacc19",
+  "smtp_pass": "5cb7a8af114c0f",
   "sender_email": "alerts@domain.com",
   "recipient_email": "admin@domain.com",
   "expiry_threshold": 30
