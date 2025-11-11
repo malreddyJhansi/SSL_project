@@ -9,13 +9,13 @@ from datetime import datetime
 try:
     # Install all dependencies from requirements.txt
     os.system("pip install -r requirements.txt")
-    print("✅ Dependencies installed successfully.")
+    print("Dependencies installed successfully.")
 except Exception as e:
-    print(f"❌ Dependency installation failed: {e}")
+    print(f" Dependency installation failed: {e}")
     sys.exit(1)
 
 # ================================================================
-# Import your project modules
+# Import project modules
 # ================================================================
 from utils.logger_utils import logger
 from utils.spark_utils import init_spark, process_domains
@@ -26,12 +26,12 @@ from utils.email_utils import build_email, send_email
 # Main job runner
 # ================================================================
 def main():
-    logger.info("🚀 Starting SSL Monitoring Job")
+    logger.info("Starting SSL Monitoring Job")
     # Load configuration
     CONFIG_PATH = os.path.join(os.getcwd(), "config.json")
 
     if not os.path.exists(CONFIG_PATH):
-        logger.error(f"❌ Config file not found at {CONFIG_PATH}")
+        logger.error(f"Config file not found at {CONFIG_PATH}")
         sys.exit(1)
 
     with open(CONFIG_PATH, "r") as f:
@@ -65,7 +65,7 @@ def main():
     )
 
     send_email(email_msg, SMTP_SERVER, SMTP_PORT, SMTP_USER, SMTP_PASS)
-    logger.info("🏁 Job completed successfully!")
+    logger.info("Job completed successfully!")
 
 # ================================================================
 #Entry point
