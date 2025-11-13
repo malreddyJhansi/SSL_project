@@ -58,4 +58,4 @@ def generate_ssl_report(expired, expiring, invalid, output_file="ssl_report.pdf"
             elements.append(Spacer(1, 20))
 
     doc.build(elements)
-    logger.info(f"✅ SSL Report generated: {output_file}")
+    logger.info(f"SSL Report generated: {output_file}")
