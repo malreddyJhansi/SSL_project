@@ -56,7 +56,7 @@ def fetch_ssl_cert(hostname: str, port: int, expiry_threshold: int = 30):
             last_error = str(e)
 
     issue_category, cert_status = classify_error(hostname, last_error or "Unknown failure")
-    # ✅ Normalize and simplify status before returning
+    # Normalize and simplify status before returning
     status = (cert_status or "invalid").strip().lower()
     
     if "invalid" in status:
